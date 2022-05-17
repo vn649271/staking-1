@@ -1,14 +1,14 @@
-# Smart contracts for EasyStaking
+# Smart contracts for StakingDemo
 
 [![built-with openzeppelin](https://img.shields.io/badge/built%20with-OpenZeppelin-3677FF)](https://docs.openzeppelin.com/)
 
-**EasyStaking** provides an alternative emission-accruing application for [POSDAO](https://forum.poa.network/t/posdao-white-paper/2208) participants and STAKE liquidity providers. Users can deposit [STAKE](https://github.com/xdaichain/stake-token) tokens deployed on the Ethereum mainnet and receive a pre-determined emission rate while tokens are locked in the contract.
+**StakingDemo** provides an alternative emission-accruing application for [POSDAO](https://forum.poa.network/t/posdao-white-paper/2208) participants and STAKE liquidity providers. Users can deposit [STAKE](https://github.com/xdaichain/stake-token) tokens deployed on the Ethereum mainnet and receive a pre-determined emission rate while tokens are locked in the contract.
 
-EasyStaking gives users an additional choice for STAKE token usage. There are no minimum deposit requirements (vs minimum 1000K for POSDAO delegated staking) and several withdrawal options available for users. While the overall APR is set lower in EasyStaking than for POSDAO stakers, effective emission accrual will vary between the two methods based on POSDAO reward distribution percentages.
+StakingDemo gives users an additional choice for STAKE token usage. There are no minimum deposit requirements (vs minimum 1000K for POSDAO delegated staking) and several withdrawal options available for users. While the overall APR is set lower in StakingDemo than for POSDAO stakers, effective emission accrual will vary between the two methods based on POSDAO reward distribution percentages.
 
-EasyStaking also provides emission distribution options for STAKE liquidity providers. A specified liquidity pool receives a % of emissions on every withdrawal event.
+StakingDemo also provides emission distribution options for STAKE liquidity providers. A specified liquidity pool receives a % of emissions on every withdrawal event.
 
-EasyStaking serves to reduce the overall amount of STAKE in active circulation, provides options for STAKE holders on Ethereum, and acts as a mechanism to limit available liquidity and supply. Limited supply in the open market increases security for POSDAO chains such as the xDai stable chain.
+StakingDemo serves to reduce the overall amount of STAKE in active circulation, provides options for STAKE holders on Ethereum, and acts as a mechanism to limit available liquidity and supply. Limited supply in the open market increases security for POSDAO chains such as the xDai stable chain.
 
 
 See also: https://www.xdaichain.com/for-stakers/easy-staking
@@ -17,7 +17,7 @@ UI: https://easy-staking.xdaichain.com
 
 ## Security Audit
 
-EasyStaking was audited by Quantstamp. You can find the audit report [here](https://github.com/xdaichain/easy-staking-contracts/blob/master/audit/Quantstamp/xDai%20EasyStaking%20-%20Final%20Report.pdf).
+StakingDemo was audited by Quantstamp. You can find the audit report [here](https://github.com/xdaichain/easy-staking-contracts/blob/master/audit/Quantstamp/xDai%20StakingDemo%20-%20Final%20Report.pdf).
 
 ## How to run
 ### Setup
@@ -53,15 +53,15 @@ There are 2 types of withdrawal:
 
 ### Making a deposit
 
-In order to make a deposit, a user can call `deposit(uint256 _amount)` function of the `EasyStaking` contract or directly send STAKE tokens to the `EasyStaking` contract using `transfer` or `transferFrom` ERC20 function of the [STAKE token contract](https://etherscan.io/address/0x0Ae055097C6d159879521C384F1D2123D1f195e6). The contract will generate a unique ID of the new deposit and accept tokens. The `deposit(uint256 _amount)` function requires tokens to be approved by the user first (using `approve` ERC20 function of the STAKE token).
+In order to make a deposit, a user can call `deposit(uint256 _amount)` function of the `StakingDemo` contract or directly send STAKE tokens to the `StakingDemo` contract using `transfer` or `transferFrom` ERC20 function of the [STAKE token contract](https://etherscan.io/address/0x0Ae055097C6d159879521C384F1D2123D1f195e6). The contract will generate a unique ID of the new deposit and accept tokens. The `deposit(uint256 _amount)` function requires tokens to be approved by the user first (using `approve` ERC20 function of the STAKE token).
 
 The easiest way to make a new deposit is to call the `transfer` function of the STAKE token.
 
-To replenish an existing deposit, the user can call `deposit(uint256 _depositId, uint256 _amount)` function specifying the ID of the existing deposit. In this case, the EasyStaking contract will accrue emission, add the specified `_amount` to the deposit, and reset the deposit's timestamp to the current one. This function can be useful for exchanges.
+To replenish an existing deposit, the user can call `deposit(uint256 _depositId, uint256 _amount)` function specifying the ID of the existing deposit. In this case, the StakingDemo contract will accrue emission, add the specified `_amount` to the deposit, and reset the deposit's timestamp to the current one. This function can be useful for exchanges.
 
 ### Making a timed withdrawal
 
-To withdraw tokens from the `EasyStaking` contract without a fee, a user needs to submit a withdrawal request using `requestWithdrawal(uint256 _depositId)` function. After `withdrawalLockDuration` time has elapsed, the user must call `makeRequestedWithdrawal(uint256 _depositId, uint256 _amount)` within the withdrawal window defined in `withdrawalUnlockDuration`. If the user misses the withdrawal window time period, they can repeat the steps (calling `requestWithdrawal` again and then wait for the `withdrawalLockDuration` time before calling `makeRequestedWithdrawal`).
+To withdraw tokens from the `StakingDemo` contract without a fee, a user needs to submit a withdrawal request using `requestWithdrawal(uint256 _depositId)` function. After `withdrawalLockDuration` time has elapsed, the user must call `makeRequestedWithdrawal(uint256 _depositId, uint256 _amount)` within the withdrawal window defined in `withdrawalUnlockDuration`. If the user misses the withdrawal window time period, they can repeat the steps (calling `requestWithdrawal` again and then wait for the `withdrawalLockDuration` time before calling `makeRequestedWithdrawal`).
 
 The `_amount` parameter allows the user to define the amount of tokens to withdraw from their deposit. The balance can be obtained using the `balances(address _holder, uint256 _depositId)` public getter. The `_amount` can be passed as `0` which means the user wants to withdraw all of their tokens with accrued emission.
 
@@ -69,7 +69,7 @@ When withdrawing a deposit (fully or partly) the user will receive the specified
 
 ### Making an instant withdrawal
 
-To withdraw tokens from the `EasyStaking` contract immediately, a user needs to call `makeForcedWithdrawal(uint256 _depositId, uint256 _amount)`. In this case, the fee will be subtracted from the deposit.
+To withdraw tokens from the `StakingDemo` contract immediately, a user needs to call `makeForcedWithdrawal(uint256 _depositId, uint256 _amount)`. In this case, the fee will be subtracted from the deposit.
 
 ### Examples of accruing emission
 
@@ -136,7 +136,7 @@ For the `set*` functions listed below the changed parameter values will only tak
 4. `setTotalSupplyFactor(uint256)` allows the owner to change the value of `total supply factor` which defines a percentage of STAKE's `totalSupply` (from 0% to 100%) used for the supply-based emission calculation (the larger the factor, the smaller the supply-based emission). 50% by default.
 5. `setSigmoidParameters(uint256,int256,uint256)` allows the owner to change sigmoid's parameters (`a`, `b`, and `c`) which is used for the time-based emission. The default values are: `a` = `75000000000000000`, `b` = `0`, `c` = `10000000000000` - they represent a sigmoid on the page https://www.desmos.com/calculator/2xtimbnzqw
 6. `setLiquidityProvidersRewardAddress(address)` allows the owner to change the address to which the liquidity providers reward is sent.
-7. `claimTokens(address,address,uint256)` allows the owner to return any tokens (or native coins) mistakenly transferred to the EasyStaking contract by any address.
+7. `claimTokens(address,address,uint256)` allows the owner to return any tokens (or native coins) mistakenly transferred to the StakingDemo contract by any address.
 8. `transferOwnership(address)` allows the owner to transfer the ownership to another address.
 9. `renounceOwnership()` allows the owner to resign forever.
 
